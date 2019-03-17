@@ -69,6 +69,7 @@ class LineChart extends Component {
     );
   }
 }
+
 LineChart.defaultProps = {
   data: [],  
   color: '#2196F3',  
