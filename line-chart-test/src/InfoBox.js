@@ -1,0 +1,1 @@
+// Renders our realtime Bitcoin prices and change since last month.

@@ -1,7 +1,18 @@
-import React, { Component } from "react"
-import "./LineChart.css"
+// Renders the actual line chart. Returns a single SVG element.
+import React, { Component } from "react";
+import "./LineChart.css";
 
 class LineChart extends Component {
+  /*
+  this.makeAxis()         Makes Graph Axis
+  this.makePath()         Makes Graph Line
+  this.makeArea()         Makes Shaded Graph Area (under line)
+  this.makeLabels()       Makes Graph Labels
+  this.getCoords(e)       When Hovered Gets Coords of Hover
+  this.createLine()       When Hovered Makes Vertical Line
+  this.makeActivePoint()  When Hovered Finds Closest Point
+  this.stopHover()        Clears Line and Point When Hover Stops
+  */
   getMinX() {
     const {data} = this.props;
     return data[0].x;
@@ -39,7 +50,9 @@ class LineChart extends Component {
       <path
         className="linechart_path"
         d={pathD} 
-        style={{stroke: color}}
+        style={
+          {stroke: color}
+        }
       />
     );
   }

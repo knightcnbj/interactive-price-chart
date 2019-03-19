@@ -5,9 +5,12 @@
   "dependencies": {
     "jshint": "^2.10.2",
     "jslint": "^0.12.1",
+    "moment": "^2.24.0",
+    "node-fetch": "^2.3.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8"
+    "react-scripts": "2.1.8",
+    "request-promise": "^4.2.4"
   },
   "scripts": {
     "start": "react-scripts start",

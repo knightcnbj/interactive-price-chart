@@ -1,0 +1,5 @@
+1. app.js fetches historical data from the CoinDesk API and formats it into an array of objects.
+2. Data is passed to the LineChart.js component which renders the chart based on the data supplied from app.js.
+3. When the SVG component rendered in LineChart.js is hovered on, 3 things happen: LineChart.js draws a vertical line on the cursor coordinates. It determines the closest data point to the cursor and draws a circle to highlight that data point. Finally, data is passed back to app.js indicating the hover location, and closest point.
+4. app.js sends data to ToolTip.js so the tool tip can render in the correct location, and with the correct data.
+5. InfoBox.js runs independently of the other components and fetches real time data from the CoinDesk API every 90 seconds. The data is formatted and then displayed to the user.

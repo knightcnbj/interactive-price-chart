@@ -1,0 +1,1 @@
+// Renders the Tool Tip displaying the date and price of the hovered location
