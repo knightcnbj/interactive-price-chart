@@ -19,7 +19,7 @@ class LineChart extends Component {
     this.state = {
       hoverLoc: null,
       activePoint: null
-    }
+    };
   }
   // GET X & Y || MAX & MIN
   getX(){
@@ -27,14 +27,14 @@ class LineChart extends Component {
     return {
       min: data[0].x,
       max: data[data.length - 1].x
-    }
+    };
   }
   getY(){
     const {data} = this.props;
     return {
       min: data.reduce((min, p) => p.y < min ? p.y : min, data[0].y),
       max: data.reduce((max, p) => p.y > max ? p.y : max, data[0].y)
-    }
+    };
   }
   // GET SVG COORDINATES
   getSvgX(x) {

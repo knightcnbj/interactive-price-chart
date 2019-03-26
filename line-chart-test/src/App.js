@@ -29,11 +29,14 @@ class App extends Component {
   componentDidMount() {
     const getData = () => {
       const url = 'https://api.coindesk.com/v1/bpi/historical/close.json';
+      const urlYesterday = 'https://api.coindesk.com/v1/bpi/historical/close.json?for=yesterday';
+      const urlWeek = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2019-01-01&end=2019-01-10';
+      const urlAll = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2012-01-01&end=2019-01-10';
 
       fetch(url).then(r => r.json()).then((bitcoinData) => {
           const sortedData = [];
           let count = 0;
-          for (let date in bitcoinData.bpi){
+          for (let date in bitcoinData.bpi) {
             sortedData.push({
               d: moment(date).format('MMM DD'),
               p: bitcoinData.bpi[date].toLocaleString('us-EN',{ style: 'currency', currency: 'USD' }),
@@ -64,14 +67,15 @@ class App extends Component {
         </div>
 
         <div className='row'>
-           { !this.state.fetchingData ?
+          { !this.state.fetchingData ?
           <InfoBox data={this.state.data} />
           : null }
         </div>
 
         <div className='row'>
           <div className='popup'>
-            {this.state.hoverLoc ? <ToolTip hoverLoc={this.state.hoverLoc} activePoint={this.state.activePoint}/> : null}
+            {this.state.hoverLoc ? 
+            <ToolTip hoverLoc={this.state.hoverLoc} activePoint={this.state.activePoint}/> : null}
           </div>
         </div>
 
