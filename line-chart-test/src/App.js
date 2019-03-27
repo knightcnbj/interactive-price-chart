@@ -14,8 +14,9 @@ class App extends Component {
     this.state = {
       fetchingData: true,
       data: null,
+      range: 'month',
       hoverLoc: null,
-      activePoint: null
+      activePoint: null,
     };
   }
 
@@ -28,26 +29,49 @@ class App extends Component {
 
   componentDidMount() {
     const getData = () => {
-      const url = 'https://api.coindesk.com/v1/bpi/historical/close.json';
-      const urlYesterday = 'https://api.coindesk.com/v1/bpi/historical/close.json?for=yesterday';
-      const urlWeek = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2019-01-01&end=2019-01-10';
+      const urlMonth = 'https://api.coindesk.com/v1/bpi/historical/close.json';
       const urlAll = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2012-01-01&end=2019-01-10';
 
-      fetch(url).then(r => r.json()).then((bitcoinData) => {
-          const sortedData = [];
+      let todayDate = moment().format('YYYY-MM-DD');
+      let aWeekBefore = moment().subtract(7, 'days').format('YYYY-MM-DD');
+      const urlWeek = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=' +
+                        aWeekBefore + '&end=' + todayDate;
+
+      const urlMap = {
+        'month': urlMonth,
+        'week': urlWeek,
+        'all': urlAll,
+      };
+
+      const priceDataMonth = [];
+      const priceDataWeek = [];
+      const priceDataAll = [];
+      const priceDataMap = {
+        'month': priceDataMonth,
+        'week': priceDataWeek,
+        'all': priceDataAll,
+      };
+
+      let myURL = urlMap[this.state.range];
+      let myPriceData = priceDataMap[this.state.range];
+
+      fetch(myURL)
+        .then(result => result.json())
+        .then((bitcoinData) => {
           let count = 0;
-          for (let date in bitcoinData.bpi) {
-            sortedData.push({
-              d: moment(date).format('MMM DD'),
+
+          for (const date in bitcoinData.bpi) {
+            myPriceData.push({
+              d: moment(date).format('YYYY MMM DD'),
               p: bitcoinData.bpi[date].toLocaleString('us-EN',{ style: 'currency', currency: 'USD' }),
-              x: count, //previous days
+              x: count, //previous day
               y: bitcoinData.bpi[date] // numerical price
             });
             count++;
           }
           this.setState({
-            data: sortedData,
-            fetchingData: false
+            data: myPriceData,
+            fetchingData: false,
           });
         })
         .catch((e) => {
@@ -87,6 +111,15 @@ class App extends Component {
            </div>
          </div>
 
+         <div className='row'>
+            <div className='rangeChoice'>
+              <form>
+                {/* <button type="radio" onClick={this.setState({range: 'month'})}>Past Month</button> */}
+                <button type="radio">Past Week</button>
+                <button type="radio">From 2012</button>
+              </form>
+            </div>
+         </div>
       </div>
     );
   }
