@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import LineChart from './LineChart';
 import ToolTip from './ToolTip';
 import InfoBox from './InfoBox';
+import RangeOption from './RangeOption';
 
 import './App.css';
 
@@ -87,7 +88,7 @@ class App extends Component {
       <div className='container'>
 
         <div className='row'>
-          <h1>30 Day Bitcoin Price Chart</h1>
+          <h1>Bitcoin Price in Past {this.state.range}</h1>
         </div>
 
         <div className='row'>
@@ -112,12 +113,8 @@ class App extends Component {
          </div>
 
          <div className='row'>
-            <div className='rangeChoice'>
-              <form>
-                {/* <button type="radio" onClick={this.setState({range: 'month'})}>Past Month</button> */}
-                <button type="radio">Past Week</button>
-                <button type="radio">From 2012</button>
-              </form>
+            <div className='rangeOption'>
+                <RangeOption/>
             </div>
          </div>
       </div>
