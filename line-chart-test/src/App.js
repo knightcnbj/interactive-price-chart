@@ -15,56 +15,10 @@ class App extends Component {
 
     this.handleClick = this.handleClick.bind(this);
 
-    const urlMonth = 'https://api.coindesk.com/v1/bpi/historical/close.json';
-    const urlAll = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2012-01-01&end=2019-01-10';
-
-    let todayDate = moment().format('YYYY-MM-DD');
-    let aWeekBefore = moment().subtract(7, 'days').format('YYYY-MM-DD');
-    const urlWeek = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=' +
-                      aWeekBefore + '&end=' + todayDate;
-
-    const urlMap = {
-      'month': urlMonth,
-      'week': urlWeek,
-      'all': urlAll,
-    };
-
-    const priceDataMonth = [];
-    const priceDataWeek = [];
-    const priceDataAll = [];
-
-    const priceDataMap = {
-      'month': priceDataMonth,
-      'week': priceDataWeek,
-      'all': priceDataAll,
-    };
-
-    for (const key in priceDataMap) {
-      const myURL = urlMap[key];
-      fetch(myURL)
-        .then(result => result.json())
-        .then((bitcoinData) => {
-          let count = 0;
-
-          for (const date in bitcoinData.bpi) {
-            priceDataMap[key].push({
-              d: moment(date).format('YYYY MMM DD'),
-              p: bitcoinData.bpi[date].toLocaleString('us-EN',{ style: 'currency', currency: 'USD' }),
-              x: count, //previous day
-              y: bitcoinData.bpi[date] // numerical price
-            });
-            count++;
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-
     this.state = {
       fetchingData: false,
-      data: priceDataMap.month,
-      priceDataMap: priceDataMap,
+      data: {'s': {d: 1, p: 1, x: 1, y: 1}},
+      priceDataMap: null,
       range: 'month',
       hoverLoc: null,
       activePoint: null,
@@ -88,58 +42,61 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // const getData = () => {
-    //   const urlMonth = 'https://api.coindesk.com/v1/bpi/historical/close.json';
-    //   const urlAll = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2012-01-01&end=2019-01-10';
+    const getData = () => {
+      const urlMonth = 'https://api.coindesk.com/v1/bpi/historical/close.json';
+      const urlAll = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2012-01-01&end=2019-01-10';
 
-    //   let todayDate = moment().format('YYYY-MM-DD');
-    //   let aWeekBefore = moment().subtract(7, 'days').format('YYYY-MM-DD');
-    //   const urlWeek = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=' +
-    //                     aWeekBefore + '&end=' + todayDate;
+      let todayDate = moment().format('YYYY-MM-DD');
+      let aWeekBefore = moment().subtract(7, 'days').format('YYYY-MM-DD');
+      const urlWeek = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=' +
+                        aWeekBefore + '&end=' + todayDate;
 
-    //   const urlMap = {
-    //     'month': urlMonth,
-    //     'week': urlWeek,
-    //     'all': urlAll,
-    //   };
+      const urlMap = {
+        'month': urlMonth,
+        'week': urlWeek,
+        'all': urlAll,
+      };
 
-    //   const priceDataMonth = [];
-    //   const priceDataWeek = [];
-    //   const priceDataAll = [];
-    //   const priceDataMap = {
-    //     'month': priceDataMonth,
-    //     'week': priceDataWeek,
-    //     'all': priceDataAll,
-    //   };
+      const priceDataMonth = [];
+      const priceDataWeek = [];
+      const priceDataAll = [];
 
-    //   let myURL = urlMap[this.state.range];
-    //   let myPriceData = priceDataMap[this.state.range];
+      const priceDataMap = {
+        'month': priceDataMonth,
+        'week': priceDataWeek,
+        'all': priceDataAll,
+      };
 
-    //   fetch(myURL)
-    //     .then(result => result.json())
-    //     .then((bitcoinData) => {
-    //       let count = 0;
+      for (const key in priceDataMap) {
+        const myURL = urlMap[key];
+        fetch(myURL)
+          .then(result => result.json())
+          .then((bitcoinData) => {
+            let count = 0;
+            for (const date in bitcoinData.bpi) {
+              priceDataMap[key].push({
+                d: moment(date).format('YYYY MMM DD'),
+                p: bitcoinData.bpi[date].toLocaleString('us-EN',{ style: 'currency', currency: 'USD' }),
+                x: count, //previous day
+                y: bitcoinData.bpi[date] // numerical price
+              });
+              count++;
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
 
-    //       for (const date in bitcoinData.bpi) {
-    //         myPriceData.push({
-    //           d: moment(date).format('YYYY MMM DD'),
-    //           p: bitcoinData.bpi[date].toLocaleString('us-EN',{ style: 'currency', currency: 'USD' }),
-    //           x: count, //previous day
-    //           y: bitcoinData.bpi[date] // numerical price
-    //         });
-    //         count++;
-    //       }
-    //       this.setState({
-    //         data: myPriceData,
-    //         fetchingData: false,
-    //       });
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
-    // };
+      this.setState({
+        priceDataMap: priceDataMap,
+        data: priceDataMap.month,
+      });
+    };
 
-    // getData();
+    getData();
+
+    alert(this.state.data[0]);
   }
 
   render() {
