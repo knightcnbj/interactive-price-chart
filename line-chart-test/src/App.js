@@ -12,6 +12,9 @@ import moment from 'moment';
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+
     this.state = {
       fetchingData: true,
       data: null,
@@ -26,6 +29,14 @@ class App extends Component {
       hoverLoc: hoverLoc,
       activePoint: activePoint
     });
+  }
+
+  handleClick(myRange) {
+    this.setState({
+        range: myRange,
+    });
+    // alert('you changed the range of price to ' + this.state.range);
+    this.componentDidMount();
   }
 
   componentDidMount() {
@@ -114,7 +125,10 @@ class App extends Component {
 
          <div className='row'>
             <div className='rangeOption'>
-                <RangeOption/>
+                {/* <RangeOption/> */}
+                <button onClick={(e) => this.handleClick('month', e)}>Month</button>
+                <button onClick={(e) => this.handleClick('week', e)}>Week</button>
+                <button onClick={(e) => this.handleClick('all', e)}>All Time</button>
             </div>
          </div>
       </div>
