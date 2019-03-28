@@ -17,7 +17,7 @@ class App extends Component {
 
     this.state = {
       fetchingData: false,
-      data: {'s': {d: 1, p: 1, x: 1, y: 1}},
+      data: null,
       priceDataMap: null,
       range: 'month',
       hoverLoc: null,
